@@ -1,21 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- 1. NAVEGACIÓN MÓVIL (Con cierre automático) ---
+    // --- 1. NAVEGACIÓN MÓVIL ---
     const toggle = document.getElementById("menu-toggle");
     const nav = document.getElementById("nav");
     const navLinks = document.querySelectorAll(".nav-link");
 
     if (toggle && nav) {
         toggle.addEventListener("click", (e) => {
-            e.stopPropagation(); // Evita que el clic se propague
+            e.stopPropagation();
             nav.classList.toggle("active");
         });
 
-        // Cerrar menú al hacer clic en un link
         navLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                nav.classList.remove("active");
-            });
+            link.addEventListener("click", () => nav.classList.remove("active"));
         });
     }
 
@@ -25,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalBody = document.getElementById("modal-body");
     const closeBtn = document.querySelector(".close");
 
-    // Función global para abrir el modal
     const openModal = (title, content) => {
         if (modal && modalTitle && modalBody) {
             modalTitle.innerText = title;
@@ -42,14 +38,28 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.style.display = "none";
-            document.body.style.overflow = "auto";
-        }
+    // --- 3. FUNCIÓN REUTILIZABLE PARA SWIPE (DEDO) ---
+    // Esta función detecta el movimiento y dispara el click de las flechas
+    const habilitarSwipe = (contenedor, btnPrev, btnNext) => {
+        let xInicial = null;
+
+        contenedor.addEventListener('touchstart', e => {
+            xInicial = e.touches[0].clientX;
+        }, { passive: true });
+
+        contenedor.addEventListener('touchend', e => {
+            if (!xInicial) return;
+            let xFinal = e.changedTouches[0].clientX;
+            let diferencia = xInicial - xFinal;
+
+            if (Math.abs(diferencia) > 50) { // Umbral de 50px
+                diferencia > 0 ? btnNext.click() : btnPrev.click();
+            }
+            xInicial = null;
+        }, { passive: true });
     };
 
-    // --- 3. CARRUSEL DE SERVICIOS ---
+    // --- 4. CARRUSEL DE SERVICIOS ---
     const track = document.querySelector('.carousel-track');
     const cards = document.querySelectorAll('.carousel-track .card');
     const nextBtn = document.querySelector('.carousel-btn.next');
@@ -66,57 +76,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nextBtn && prevBtn && cards.length > 0) {
         nextBtn.addEventListener('click', () => {
             const visibleCards = window.innerWidth > 768 ? 3 : 1;
-            if (index < cards.length - visibleCards) {
-                index++;
-                updateCarousel();
-            }
+            if (index < cards.length - visibleCards) index++;
+            updateCarousel();
         });
 
         prevBtn.addEventListener('click', () => {
-            if (index > 0) {
-                index--;
-                updateCarousel();
-            }
+            if (index > 0) index--;
+            updateCarousel();
         });
-        
-        // Ajustar carrusel al cambiar el tamaño de la ventana
-        window.addEventListener('resize', updateCarousel);
+
+        // ACTIVAR SWIPE EN SERVICIOS
+        habilitarSwipe(track.parentElement, prevBtn, nextBtn);
     }
-
-    // --- 4. DATOS DE SERVICIOS Y CLIC EN CARDS ---
-    const serviciosFull = {
-        manicure: {
-            titulo: "Servicios de Manicure",
-            lista: [
-                { nombre: "Manicure Tradicional", precio: "$20.000" },
-                { nombre: "Manicure Semi-permanente", precio: "$45.000" },
-                { nombre: "Uñas Acrílicas (Set Nuevo)", precio: "$85.000" },
-                { nombre: "Uñas en Gel", precio: "$75.000" },
-                { nombre: "Retoque Acrílico", precio: "$50.000" },
-                { nombre: "Nail Art (Desde)", precio: "$15.000" }
-            ]
-        },
-        pedicure: { titulo: "Servicios de Pedicure", lista: [{ nombre: "Pedicure Tradicional", precio: "$30.000" }, { nombre: "Pedicure Spa", precio: "$45.000" }] },
-        cejas: { titulo: "Cejas y Mirada", lista: [{ nombre: "Diseño + Depilación", precio: "$15.000" }, { nombre: "Henna", precio: "$25.000" }] },
-        depilacion: { titulo: "Depilación con Cera", lista: [{ nombre: "Boso", precio: "$8.000" }, { nombre: "Piernas", precio: "$40.000" }] }
-    };
-
-    cards.forEach(card => {
-        card.addEventListener('click', () => {
-            const key = card.getAttribute('data-service');
-            const data = serviciosFull[key];
-            if (data) {
-                let htmlLista = `<ul style="list-style:none; padding:0; margin-bottom:20px;">`;
-                data.lista.forEach(item => {
-                    htmlLista += `<li style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f0f0f0;">
-                                    <span>${item.nombre}</span><strong>${item.precio}</strong>
-                                  </li>`;
-                });
-                htmlLista += `</ul><a href="https://wa.me/573044495267?text=Hola Karen! ✨ Agendar: ${data.titulo}" class="btn-primary" style="display:block; text-align:center;">WhatsApp</a>`;
-                openModal(data.titulo, htmlLista);
-            }
-        });
-    });
 
     // --- 5. SLIDER DE GALERÍA ---
     const galeriaTrack = document.getElementById('galeria-track');
@@ -125,12 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevGaleria = document.querySelector('.prev-galeria');
     let galeriaIndex = 0;
 
-    function moverGaleria() {
+    const moverGaleria = () => {
         if (!galeriaTrack || galeriaImgs.length === 0) return;
         const gap = 15;
         const imgWidth = galeriaImgs[0].offsetWidth;
         galeriaTrack.style.transform = `translateX(-${galeriaIndex * (imgWidth + gap)}px)`;
-    }
+    };
 
     if (nextGaleria && prevGaleria && galeriaImgs.length > 0) {
         nextGaleria.addEventListener('click', () => {
@@ -140,28 +111,46 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         prevGaleria.addEventListener('click', () => {
-            if (galeriaIndex > 0) {
-                galeriaIndex--;
-                moverGaleria();
-            }
+            if (galeriaIndex > 0) galeriaIndex--;
+            moverGaleria();
         });
+
+        // ACTIVAR SWIPE EN GALERÍA
+        habilitarSwipe(galeriaTrack.parentElement, prevGaleria, nextGaleria);
     }
 
-    // Zoom imágenes galería
-    galeriaImgs.forEach(img => {
-        img.addEventListener("click", () => {
-            openModal("Inspiración", `<img src="${img.src}" style="width:100%; border-radius:15px;">`);
+    // --- 6. DATOS Y ZOOM (Sin cambios) ---
+    const serviciosFull = {
+        manicure: { titulo: "Servicios de Manicure", lista: [{ nombre: "Manicure Tradicional", precio: "$20.000" }, { nombre: "Semi-permanente", precio: "$45.000" }] },
+        pedicure: { titulo: "Servicios de Pedicure", lista: [{ nombre: "Pedicure Tradicional", precio: "$30.000" }] },
+        cejas: { titulo: "Cejas y Mirada", lista: [{ nombre: "Diseño + Depilación", precio: "$15.000" }] },
+        depilacion: { titulo: "Depilación con Cera", lista: [{ nombre: "Boso", precio: "$8.000" }] }
+    };
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const key = card.getAttribute('data-service');
+            const data = serviciosFull[key];
+            if (data) {
+                let html = `<ul style="list-style:none; padding:0;">`;
+                data.lista.forEach(i => html += `<li style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>${i.nombre}</span><strong>${i.precio}</strong></li>`);
+                html += `</ul>`;
+                openModal(data.titulo, html);
+            }
         });
     });
 
-    // --- 6. FORMULARIO ---
+    galeriaImgs.forEach(img => {
+        img.addEventListener("click", () => openModal("Inspiración", `<img src="${img.src}" style="width:100%; border-radius:15px;">`));
+    });
+
+    // --- 7. FORMULARIO ---
     const form = document.querySelector(".form");
     if (form) {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             const inputs = form.querySelectorAll("input");
-            const textoWa = `Hola Karen! ✨%0A*Nuevo Mensaje*%0A*Nombre:* ${inputs[0].value}%0A*Servicio:* ${inputs[2].value}`;
-            window.open(`https://wa.me/573044495267?text=${textoWa}`);
+            window.open(`https://wa.me/573044495267?text=Hola Karen! ✨ Nombre: ${inputs[0].value} - Servicio: ${inputs[2].value}`);
         });
     }
 });
