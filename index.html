@@ -3,33 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karen Nails Studio</title>
+  <title>Karen Nails | Studio</title>
 
   <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <!-- ESTILOS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/modal.css">
 </head>
 
 <body>
 
 <!-- HEADER -->
 <header class="header">
-  <div class="logo">K<span>N</span></div>
+  <div class="logo">Karen<span>Osorio</span></div>
 
-  <!-- NAV -->
+  <!-- Ajuste: Añadida la clase nav-link para que el JS los detecte y cierre el menú -->
   <nav id="nav">
-    <a href="#">Inicio</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#galeria">Galería</a>
-    <a href="#contacto">Contacto</a>
+    <a href="#" class="nav-link">Inicio</a>
+    <a href="#servicios" class="nav-link">Servicios</a>
+    <a href="#galeria" class="nav-link">Galería</a>
+    <a href="#contacto" class="nav-link">Contacto</a>
   </nav>
 
-  <!-- BOTÓN -->
-  <a href="https://wa.me/573134070742" class="btn">WhatsApp</a>
-
-  <!-- HAMBURGUESA -->
   <div class="menu-toggle" id="menu-toggle">
     <span></span>
     <span></span>
@@ -41,59 +38,115 @@
 <section class="hero">
   <div class="hero-text">
     <p class="tag">Belleza en cada detalle 💕</p>
-    <h1>Karen <span>Nails</span></h1>
-    <h3>Studio</h3>
+    <h1>Karen <span>Osorio</span></h1>
+    <h3>Nails</h3>
 
     <p class="desc">
       Realzamos tu belleza con diseños únicos, elegancia y mucho amor.
     </p>
 
     <div class="buttons">
-      <a href="https://wa.me/573134070742" class="btn-primary">Agendar por WhatsApp</a>
+      <a href="https://wa.me/573044495267" class="btn-primary">Agendar por WhatsApp</a>
       <a href="#servicios" class="btn-outline">Ver servicios</a>
     </div>
   </div>
 </section>
 
-<!-- SERVICIOS -->
-<section id="servicios" class="servicios">
-  <h4>NUESTROS SERVICIOS</h4>
-  <h2>Lo que hacemos <span>por ti</span></h2>
-
-  <div class="cards">
-    <div class="card">
-      <h3>Manicure</h3>
-      <p>Cuidado y embellecimiento de tus manos.</p>
+<!-- BANNER DE PROMOCIONES -->
+<section class="promo-banner">
+    <div class="promo-content">
+        <div class="promo-info">
+            <span class="promo-tag">Oferta por tiempo limitado ⏳</span>
+            <h2>Combo <span>Spa & Glow</span></h2>
+            <p>Manicure Semi-permanente + Pedicure Spa + Hidratación profunda con un <strong>20% de Descuento</strong>.</p>
+            <div class="promo-price">
+                <span class="old-price">$90.000</span>
+                <span class="new-price">$72.000</span>
+            </div>
+            <a href="https://wa.me/573044495267?text=Quiero%20la%20promoción%20Spa%20Glow" class="btn-promo">Reclamar Oferta</a>
+        </div>
+        <div class="promo-image">
+            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=600" alt="Promoción">
+        </div>
     </div>
-
-    <div class="card">
-      <h3>Uñas Acrílicas</h3>
-      <p>Diseños resistentes y elegantes.</p>
-    </div>
-
-    <div class="card">
-      <h3>Uñas en Gel</h3>
-      <p>Brillo y acabado perfecto.</p>
-    </div>
-
-    <div class="card">
-      <h3>Nail Art</h3>
-      <p>Diseños únicos y creativos.</p>
-    </div>
-  </div>
 </section>
 
-<!-- GALERÍA -->
-<section id="galeria" class="galeria">
-  <h4>GALERÍA</h4>
-  <h2>Inspiración <span>para ti</span></h2>
 
-  <div class="galeria-grid">
-    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371" alt="Diseño de uñas">
-    <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc" alt="Uñas elegantes">
-    <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223" alt="Nail art creativo">
-    <img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66" alt="Manicure profesional">
-  </div>
+<!-- SERVICIOS CON CARROUSEL -->
+<section id="servicios" class="servicios">
+    <h4>NUESTROS SERVICIOS</h4>
+    <h2>Experiencias <span>Exclusivas</span></h2>
+
+    <div class="carousel-container">
+        <div class="carousel-track">
+            <div class="card" data-service="manicure">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=400" alt="Manicure">
+                </div>
+                <div class="card-info">
+                    <h3>Manicure</h3>
+                    <p>Tradicional, Semi y más.</p>
+                </div>
+            </div>
+
+            <div class="card" data-service="pedicure">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=400" alt="Pedicure">
+                </div>
+                <div class="card-info">
+                    <h3>Pedicure</h3>
+                    <p>Spa y relajación total.</p>
+                </div>
+            </div>
+
+            <div class="card" data-service="cejas">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=400" alt="Cejas">
+                </div>
+                <div class="card-info">
+                    <h3>Cejas</h3>
+                    <p>Diseño y sombreado.</p>
+                </div>
+            </div>
+
+            <div class="card" data-service="depilacion">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1590439471364-192aa70c0b53?q=80&w=400" alt="Depilación">
+                </div>
+                <div class="card-info">
+                    <h3>Depilación</h3>
+                    <p>Piel suave y perfecta.</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="carousel-btn prev">❮</button>
+        <button class="carousel-btn next">❯</button>
+    </div>
+</section>
+
+<!-- GALERÍA SLIDER -->
+<section id="galeria" class="galeria">
+    <h4>GALERÍA</h4>
+    <h2>Inspiración <span>para ti</span></h2>
+
+    <div class="galeria-slider-container">
+        <div class="galeria-track" id="galeria-track">
+            <!-- Imágenes de alta calidad enfocadas en Nails -->
+            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=500" alt="Diseño 1">
+            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=500" alt="Diseño 2">
+            <img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=500" alt="Diseño 3">
+            <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?q=80&w=500" alt="Diseño 4">
+            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=500" alt="Diseño 5">
+            <img src="https://images.unsplash.com/photo-1621784563330-caee0b138a00?q=80&w=500" alt="Diseño 6">
+            <img src="https://images.unsplash.com/photo-1634712282287-14ed57b9cc89?q=80&w=500" alt="Diseño 7">
+            <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=500" alt="Diseño 8">
+            <!-- Puedes seguir agregando hasta 30 si lo deseas -->
+        </div>
+
+        <button class="slider-btn prev-galeria">❮</button>
+        <button class="slider-btn next-galeria">❯</button>
+    </div>
 </section>
 
 <!-- CONTACTO -->
@@ -101,8 +154,7 @@
   <div class="contact-left">
     <h2>Agenda tu cita<br><span>y luce increíble</span></h2>
     <p>Escríbenos por WhatsApp y reserva tu espacio.</p>
-
-    <a href="https://wa.me/573134070742" class="btn-primary">Agendar por WhatsApp</a>
+    <a href="https://wa.me/573044495267" class="btn-primary">Agendar por WhatsApp</a>
   </div>
 
   <form class="form">
@@ -114,14 +166,27 @@
   </form>
 </section>
 
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modal-title"></h2>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- BOTÓN WHATSAPP FLOTANTE -->
+<a href="https://wa.me/573044495267" class="whatsapp-float" target="_blank">
+  💬
+</a>
+
 <!-- FOOTER -->
 <footer>
   <p>© 2026 Karen Nails Studio</p>
-   <p>Desarrollado por Miguel Angel Acosta Ortiz</p>
+  <p>Desarrollado por Miguel Angel Acosta Ortiz</p>
 </footer>
 
-<!-- SCRIPT -->
-<script src="salon.js"></script>
+<script src="js/salon.js"></script>
 
 </body>
 </html>
