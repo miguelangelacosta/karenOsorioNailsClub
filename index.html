@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Karen Nails | Studio</title>
+  <title>Karen Nails </title>
 
   <!-- FUENTES -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
 <!-- HEADER -->
 <header class="header">
   <div class="logo">Karen<span>Osorio</span></div>
@@ -49,14 +48,17 @@
       </div>
     </div>
 
-    <!-- Escena 3D -->
+    <!-- Escena 3D Optimizada -->
     <div class="hero-visual" id="parallax-scene">
       <div class="glow-bg"></div>
-      <!-- Imagen con fallback en caso de que el link falle -->
-      <img src="https://www.pngarts.com/files/1/Nails-PNG-High-Quality-Image.png" 
-           alt="Diseño de Uñas" 
-           class="layer-main"
-           onerror="this.src='https://via.placeholder.com/500x500.png?text=Imagen+Sin+Fondo+Aqui'">
+      
+      <!-- Contenedor layer-main con soporte para profundidad -->
+      <div class="layer-main">
+        <img src="https://www.pngarts.com/files/1/Nails-PNG-High-Quality-Image.png" 
+             alt="Diseño de Uñas" 
+             id="parallax-image"
+             onerror="this.src='https://via.placeholder.com/500x500.png?text=Imagen+Sin+Fondo+Aqui'">
+      </div>
     </div>
   </div>
 </section>
@@ -83,103 +85,52 @@
 
     <div class="carousel-container">
         <div class="carousel-track">
-            <!-- CARD MANICURE -->
+            <!-- Card 1: Manicure -->
             <div class="card" data-service="manicure">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-img">
-                            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=400" alt="Manicure">
-                        </div>
-                        <div class="card-info">
-                            <h3>Manicure</h3>
-                            <p>Tradicional, Semi y más.</p>
-                        </div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Servicios</h3>
-                        <ul>
-                            <li>✨ Tradicional</li>
-                            <li>💖 Semi-permanente</li>
-                            <li>💅 Uñas Acrílicas</li>
-                        </ul>
-                        <p class="tap-hint">Ver precios y agendar</p>
-                    </div>
+                <div class="card-img">
+                    <img src="img/serviciosmanicure.jpeg" alt="Manicure">
+                </div>
+                <div class="card-info">
+                    <h3>Manicure</h3>
+                    <p>Tradicional, Semi y más.</p>
                 </div>
             </div>
 
-            <!-- CARD PEDICURE -->
+            <!-- Card 2: Pedicure -->
             <div class="card" data-service="pedicure">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-img">
-                            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=400" alt="Pedicure">
-                        </div>
-                        <div class="card-info">
-                            <h3>Pedicure</h3>
-                            <p>Spa y relajación total.</p>
-                        </div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Pedicure</h3>
-                        <ul>
-                            <li>✨ Spa Limpieza</li>
-                            <li>🌿 Hidratación profunda</li>
-                            <li>🎨 Decoración</li>
-                        </ul>
-                        <p class="tap-hint">Ver precios y agendar</p>
-                    </div>
+                <div class="card-img">
+                    <img src="img/pedicure.jpeg" alt="Pedicure">
+                </div>
+                <div class="card-info">
+                    <h3>Pedicure</h3>
+                    <p>Spa y relajación total.</p>
                 </div>
             </div>
 
-            <!-- CARD CEJAS -->
+            <!-- Card 3: Cejas -->
             <div class="card" data-service="cejas">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-img">
-                            <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=400" alt="Cejas">
-                        </div>
-                        <div class="card-info">
-                            <h3>Cejas</h3>
-                            <p>Diseño y sombreado.</p>
-                        </div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Cejas</h3>
-                        <ul>
-                            <li>✨ Diseño + Cera</li>
-                            <li>🖌️ Henna</li>
-                            <li>👁️ Laminado</li>
-                        </ul>
-                        <p class="tap-hint">Ver precios y agendar</p>
-                    </div>
+                <div class="card-img">
+                    <img src="img/cejas para cada rostro.jpeg" alt="Cejas">
+                </div>
+                <div class="card-info">
+                    <h3>Cejas</h3>
+                    <p>Diseño y sombreado.</p>
                 </div>
             </div>
 
-            <!-- CARD DEPILACIÓN -->
+            <!-- Card 4: Depilación -->
             <div class="card" data-service="depilacion">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="card-img">
-                            <img src="https://images.unsplash.com/photo-1590439471364-192aa70c0b53?q=80&w=400" alt="Depilación">
-                        </div>
-                        <div class="card-info">
-                            <h3>Depilación</h3>
-                            <p>Piel suave y perfecta.</p>
-                        </div>
-                    </div>
-                    <div class="card-back">
-                        <h3>Depilación</h3>
-                        <ul>
-                            <li>✨ Boso</li>
-                            <li>💖 Axilas</li>
-                            <li>💅 Piernas</li>
-                        </ul>
-                        <p class="tap-hint">Ver precios y agendar</p>
-                    </div>
+                <div class="card-img">
+                    <img src="img/depilacon.jpeg" alt="Depilación">
+                </div>
+                <div class="card-info">
+                    <h3>Depilación</h3>
+                    <p>Piel suave y perfecta.</p>
                 </div>
             </div>
         </div>
         
+        <!-- Controles del Carrusel -->
         <button class="carousel-btn prev">❮</button>
         <button class="carousel-btn next">❯</button>
     </div>
@@ -192,18 +143,40 @@
 
     <div class="galeria-slider-container">
         <div class="galeria-track" id="galeria-track">
-            <!-- Imágenes de alta calidad enfocadas en Nails -->
-            <img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?q=80&w=500" alt="Diseño 1">
-            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=500" alt="Diseño 2">
-            <img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=500" alt="Diseño 3">
-            <img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?q=80&w=500" alt="Diseño 4">
-            <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=500" alt="Diseño 5">
-            <img src="https://images.unsplash.com/photo-1621784563330-caee0b138a00?q=80&w=500" alt="Diseño 6">
-            <img src="https://images.unsplash.com/photo-1634712282287-14ed57b9cc89?q=80&w=500" alt="Diseño 7">
-            <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=500" alt="Diseño 8">
-            <!-- Puedes seguir agregando hasta 30 si lo deseas -->
+            <!-- 30 DISEÑOS EXCLUSIVOS DE UÑAS -->
+<img src="img/descarga (1).jpeg" alt="Diseño Nude">
+<img src="img/descarga (4).jpeg" alt="Acrílico Dorado">
+<img src="img/descarga (2).jpeg" alt="Rojo Clásico">
+<img src="img/descarga (3).jpeg" alt="Diseño Azul Pastel">
+<img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?q=80&w=500" alt="Uñas Mate">
+<img src="img/descarga (6).jpeg" alt="Nail Art Abstracto">
+<img src="img/descarga (7).jpeg" alt="Francesa Moderna">
+<img src="img/descarga (8).jpeg" alt="Mármol Blanco">
+<img src="img/descarga.jpeg" alt="Lila Soft">
+<img src="img/diseños de manicure.jpeg" alt="Minimalista">
+<img src="img/pedicure.jpeg" alt="Hojilla de Oro">
+<img src="https://images.unsplash.com/photo-1634712282287-14ed57b9cc89?q=80&w=500" alt="Uñas Neon">
+<img src="https://images.unsplash.com/photo-1571290274554-e94491719f0e?q=80&w=500" alt="Ombré Pink">
+<img src="https://images.unsplash.com/photo-1620121478277-ad99c43d5789?q=80&w=500" alt="Geométrico">
+<img src="https://images.unsplash.com/photo-1516760888545-70515605332e?q=80&w=500" alt="Plateado Glitter">
+<img src="https://images.unsplash.com/photo-1611080511677-4444983637e1?q=80&w=500" alt="Efecto Chrome">
+<img src="https://images.unsplash.com/photo-1604654894435-0275be501255?q=80&w=500" alt="Rosa Palo">
+<img src="https://images.unsplash.com/photo-1610992015822-63a228c8942b?q=80&w=500" alt="Azul Cielo">
+<img src="https://images.unsplash.com/photo-1620121477008-f29e96e19310?q=80&w=500" alt="Café y Mocha">
+<img src="https://images.unsplash.com/photo-1610416558238-66236b28f869?q=80&w=500" alt="Blanco Perla">
+<img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=500" alt="Brillos">
+<img src="https://images.unsplash.com/photo-1582121345860-26f634f19b88?q=80&w=500" alt="Durazno">
+<img src="https://images.unsplash.com/photo-1604902396830-aca29e19b067?q=80&w=500" alt="Vino Tinto">
+<img src="https://images.unsplash.com/photo-1606131731447-380d07a1674a?q=80&w=500" alt="Flores">
+<img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=500" alt="Diamantes">
+<img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=500" alt="Verde Esmeralda">
+<img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=500" alt="Holográfico">
+<img src="https://images.unsplash.com/photo-1612817288470-36a56ec00010?q=80&w=500" alt="Rojo Fiesta">
+<img src="https://images.unsplash.com/photo-1563174900-516140cc3057?q=80&w=500" alt="Beige Elegante">
+<img src="https://images.unsplash.com/photo-1610992015509-f6551b946808?q=80&w=500" alt="Azul Noche">
         </div>
 
+        <!-- Controles -->
         <button class="slider-btn prev-galeria">❮</button>
         <button class="slider-btn next-galeria">❯</button>
     </div>
@@ -214,6 +187,7 @@
   <div class="contact-left">
     <h2>Agenda tu cita<br><span>y luce increíble</span></h2>
     <p>Escríbenos por WhatsApp y reserva tu espacio.</p>
+
     <a href="https://wa.me/573044495267" class="btn-primary">Agendar por WhatsApp</a>
   </div>
 
@@ -225,16 +199,17 @@
     <button type="submit">Enviar mensaje</button>
   </form>
 </section>
-<!-- MODAL CORREGIDO -->
-<div id="modal" class="modal-overlay">
-  <div class="modal-card">
-    <!-- El problema suele estar aquí: asegúrate de que diga close-modal -->
-    <span class="close-modal">&times;</span>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
     <h2 id="modal-title"></h2>
     <div id="modal-body"></div>
   </div>
 </div>
-<!-- BOTÓN WHATSAPP FLOTANTE -->
+
+<!-- 🔥 BOTÓN WHATSAPP FLOTANTE -->
 <a href="https://wa.me/573044495267" class="whatsapp-float" target="_blank">
   💬
 </a>
@@ -245,6 +220,7 @@
   <p>Desarrollado por Miguel Angel Acosta Ortiz</p>
 </footer>
 
+<!-- SCRIPT -->
 <script src="js/salon.js"></script>
 
 </body>
