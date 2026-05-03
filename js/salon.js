@@ -1,3 +1,8 @@
+/**
+ * KAREN NAILS STUDIO - JS COMPLETO 2026
+ * Manejo de UI, Efectos 3D y Carruseles Automáticos
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
     
     // --- 1. NAVEGACIÓN MÓVIL ---
@@ -9,26 +14,135 @@ document.addEventListener("DOMContentLoaded", () => {
         toggle.addEventListener("click", (e) => {
             e.stopPropagation();
             nav.classList.toggle("active");
+            
+            // Animación del icono de hamburguesa
+            const spans = toggle.querySelectorAll('span');
+            if (nav.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
         });
 
         navLinks.forEach(link => {
-            link.addEventListener("click", () => nav.classList.remove("active"));
+            link.onclick = () => {
+                nav.classList.remove("active");
+                const spans = toggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            };
         });
     }
 
-    // --- 2. LÓGICA DEL MODAL ---
-    const modal = document.getElementById("modal");
-    const modalTitle = document.getElementById("modal-title");
-    const modalBody = document.getElementById("modal-body");
-    const closeBtn = document.querySelector(".close");
+    // --- 2. LÓGICA DE CARRUSELES CON AUTO-PLAY ---
+    const initCarousel = (trackSelector, prevBtnSelector, nextBtnSelector, gap, autoPlayDelay = 5000) => {
+        const track = document.querySelector(trackSelector);
+        const prevBtn = document.querySelector(prevBtnSelector);
+        const nextBtn = document.querySelector(nextBtnSelector);
 
+        if (!track || !prevBtn || !nextBtn || !track.firstElementChild) return;
+
+        let currentIndex = 0;
+        let autoPlayTimer;
+
+        const moveCarousel = () => {
+            const itemWidth = track.firstElementChild.getBoundingClientRect().width;
+            const displacement = currentIndex * (itemWidth + gap);
+            track.style.transform = `translateX(-${displacement}px)`;
+        };
+
+        const nextSlide = () => {
+            const totalItems = track.children.length;
+            const visibleItems = Math.round(track.parentElement.offsetWidth / track.firstElementChild.offsetWidth);
+            
+            if (currentIndex < totalItems - visibleItems) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Regresa al inicio (Loop)
+            }
+            moveCarousel();
+        };
+
+        const prevSlide = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                const totalItems = track.children.length;
+                const visibleItems = Math.round(track.parentElement.offsetWidth / track.firstElementChild.offsetWidth);
+                currentIndex = totalItems - visibleItems; // Ir al final
+            }
+            moveCarousel();
+        };
+
+        // Click en botones y reinicio de timer
+        nextBtn.onclick = () => { nextSlide(); resetAutoPlay(); };
+        prevBtn.onclick = () => { prevSlide(); resetAutoPlay(); };
+
+        // Funciones de Auto-Play
+        const startAutoPlay = () => {
+            autoPlayTimer = setInterval(nextSlide, autoPlayDelay);
+        };
+
+        const resetAutoPlay = () => {
+            clearInterval(autoPlayTimer);
+            startAutoPlay();
+        };
+
+        // Pausar si el mouse está encima
+        track.parentElement.addEventListener('mouseenter', () => clearInterval(autoPlayTimer));
+        track.parentElement.addEventListener('mouseleave', startAutoPlay);
+
+        startAutoPlay(); // Iniciar automático al cargar
+
+        // Swipe para móviles
+        let xDown = null;
+        track.addEventListener('touchstart', (e) => xDown = e.touches[0].clientX, {passive: true});
+        track.addEventListener('touchend', (e) => {
+            if (!xDown) return;
+            let xDiff = xDown - e.changedTouches[0].clientX;
+            if (Math.abs(xDiff) > 50) {
+                xDiff > 0 ? nextSlide() : prevSlide();
+                resetAutoPlay();
+            }
+            xDown = null;
+        }, {passive: true});
+
+        window.addEventListener('resize', moveCarousel);
+    };
+
+    // Inicialización (Servicios cada 5s, Galería cada 4s)
+    initCarousel('.carousel-track', '.prev', '.next', 20, 5000);
+    initCarousel('.galeria-track', '.prev-galeria', '.next-galeria', 20, 4000);
+
+    // --- 3. EFECTO PARALLAX 3D (Hero) ---
+    const hand = document.querySelector('.layer-main');
+    if (hand) {
+        window.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 45;
+            const y = (window.innerHeight / 2 - e.pageY) / 45;
+            hand.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) translateZ(20px)`;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            hand.style.transform = `rotateY(0deg) rotateX(0deg) translateZ(0px)`;
+        });
+    }
+
+    // --- 4. MODAL Y DATOS DE SERVICIOS ---
+    const modal = document.getElementById("modal");
+    const closeBtn = document.querySelector(".close");
+    
     const openModal = (title, content) => {
-        if (modal && modalTitle && modalBody) {
-            modalTitle.innerText = title;
-            modalBody.innerHTML = content;
-            modal.style.display = "flex";
-            document.body.style.overflow = "hidden"; 
-        }
+        if (!modal) return;
+        document.getElementById("modal-title").innerText = title;
+        document.getElementById("modal-body").innerHTML = content;
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
     };
 
     if (closeBtn) {
@@ -38,119 +152,42 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    // --- 3. FUNCIÓN REUTILIZABLE PARA SWIPE (DEDO) ---
-    // Esta función detecta el movimiento y dispara el click de las flechas
-    const habilitarSwipe = (contenedor, btnPrev, btnNext) => {
-        let xInicial = null;
-
-        contenedor.addEventListener('touchstart', e => {
-            xInicial = e.touches[0].clientX;
-        }, { passive: true });
-
-        contenedor.addEventListener('touchend', e => {
-            if (!xInicial) return;
-            let xFinal = e.changedTouches[0].clientX;
-            let diferencia = xInicial - xFinal;
-
-            if (Math.abs(diferencia) > 50) { // Umbral de 50px
-                diferencia > 0 ? btnNext.click() : btnPrev.click();
-            }
-            xInicial = null;
-        }, { passive: true });
-    };
-
-    // --- 4. CARRUSEL DE SERVICIOS ---
-    const track = document.querySelector('.carousel-track');
-    const cards = document.querySelectorAll('.carousel-track .card');
-    const nextBtn = document.querySelector('.carousel-btn.next');
-    const prevBtn = document.querySelector('.carousel-btn.prev');
-    let index = 0;
-
-    const updateCarousel = () => {
-        if (!track || cards.length === 0) return;
-        const gap = 20;
-        const cardWidth = cards[0].offsetWidth;
-        track.style.transform = `translateX(-${index * (cardWidth + gap)}px)`;
-    };
-
-    if (nextBtn && prevBtn && cards.length > 0) {
-        nextBtn.addEventListener('click', () => {
-            const visibleCards = window.innerWidth > 768 ? 3 : 1;
-            if (index < cards.length - visibleCards) index++;
-            updateCarousel();
-        });
-
-        prevBtn.addEventListener('click', () => {
-            if (index > 0) index--;
-            updateCarousel();
-        });
-
-        // ACTIVAR SWIPE EN SERVICIOS
-        habilitarSwipe(track.parentElement, prevBtn, nextBtn);
-    }
-
-    // --- 5. SLIDER DE GALERÍA ---
-    const galeriaTrack = document.getElementById('galeria-track');
-    const galeriaImgs = document.querySelectorAll('.galeria-track img');
-    const nextGaleria = document.querySelector('.next-galeria');
-    const prevGaleria = document.querySelector('.prev-galeria');
-    let galeriaIndex = 0;
-
-    const moverGaleria = () => {
-        if (!galeriaTrack || galeriaImgs.length === 0) return;
-        const gap = 15;
-        const imgWidth = galeriaImgs[0].offsetWidth;
-        galeriaTrack.style.transform = `translateX(-${galeriaIndex * (imgWidth + gap)}px)`;
-    };
-
-    if (nextGaleria && prevGaleria && galeriaImgs.length > 0) {
-        nextGaleria.addEventListener('click', () => {
-            const visibles = window.innerWidth > 1024 ? 4 : (window.innerWidth > 600 ? 2 : 1);
-            galeriaIndex = (galeriaIndex < galeriaImgs.length - visibles) ? galeriaIndex + 1 : 0;
-            moverGaleria();
-        });
-
-        prevGaleria.addEventListener('click', () => {
-            if (galeriaIndex > 0) galeriaIndex--;
-            moverGaleria();
-        });
-
-        // ACTIVAR SWIPE EN GALERÍA
-        habilitarSwipe(galeriaTrack.parentElement, prevGaleria, nextGaleria);
-    }
-
-    // --- 6. DATOS Y ZOOM (Sin cambios) ---
     const serviciosFull = {
-        manicure: { titulo: "Servicios de Manicure", lista: [{ nombre: "Manicure Tradicional", precio: "$20.000" }, { nombre: "Semi-permanente", precio: "$45.000" }] },
-        pedicure: { titulo: "Servicios de Pedicure", lista: [{ nombre: "Pedicure Tradicional", precio: "$30.000" }] },
-        cejas: { titulo: "Cejas y Mirada", lista: [{ nombre: "Diseño + Depilación", precio: "$15.000" }] },
-        depilacion: { titulo: "Depilación con Cera", lista: [{ nombre: "Boso", precio: "$8.000" }] }
+        manicure: { titulo: "Manicure", lista: [{ n: "Tradicional", p: "$20.000" }, { n: "Semi-permanente", p: "$45.000" }] },
+        pedicure: { titulo: "Pedicure", lista: [{ n: "Tradicional", p: "$30.000" }, { n: "Spa Limpieza", p: "$40.000" }] },
+        cejas: { titulo: "Cejas", lista: [{ n: "Diseño + Cera", p: "$15.000" }] },
+        depilacion: { titulo: "Depilación", lista: [{ n: "Boso", p: "$8.000" }, { n: "Axilas", p: "$15.000" }] }
     };
 
-    cards.forEach(card => {
-        card.addEventListener('click', () => {
-            const key = card.getAttribute('data-service');
+    document.querySelectorAll('.card').forEach(card => {
+        card.onclick = () => {
+            const key = card.dataset.service;
             const data = serviciosFull[key];
             if (data) {
                 let html = `<ul style="list-style:none; padding:0;">`;
-                data.lista.forEach(i => html += `<li style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>${i.nombre}</span><strong>${i.precio}</strong></li>`);
-                html += `</ul>`;
-                openModal(data.titulo, html);
+                data.lista.forEach(i => {
+                    html += `<li style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #eee;">
+                                <span>${i.n}</span><strong>${i.p}</strong>
+                             </li>`;
+                });
+                openModal(data.titulo, html + `</ul>`);
             }
-        });
+        };
     });
 
-    galeriaImgs.forEach(img => {
-        img.addEventListener("click", () => openModal("Inspiración", `<img src="${img.src}" style="width:100%; border-radius:15px;">`));
+    // Zoom Galería
+    document.querySelectorAll('.galeria-track img').forEach(img => {
+        img.onclick = () => openModal("Inspiración Karen Nails", `<img src="${img.src}" style="width:100%; border-radius:15px;">`);
     });
 
-    // --- 7. FORMULARIO ---
+    // --- 5. WHATSAPP FORM ---
     const form = document.querySelector(".form");
     if (form) {
-        form.addEventListener("submit", (e) => {
+        form.onsubmit = (e) => {
             e.preventDefault();
             const inputs = form.querySelectorAll("input");
-            window.open(`https://wa.me/573044495267?text=Hola Karen! ✨ Nombre: ${inputs[0].value} - Servicio: ${inputs[2].value}`);
-        });
+            const text = encodeURIComponent(`¡Hola Karen! ✨ Mi nombre es ${inputs[0].value}, me interesa el servicio de ${inputs[2].value}.`);
+            window.open(`https://wa.me/573044495267?text=${text}`, "_blank");
+        };
     }
 });
