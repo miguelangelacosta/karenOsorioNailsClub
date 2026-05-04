@@ -1,28 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
     
     // --- 1. EFECTO 3D POP-OUT (HERO SECTION) ---
-    // Este bloque gestiona la inclinación de la imagen según el movimiento del mouse
     const heroScene = document.querySelector('.hero');
     const heroImg = document.getElementById('parallax-image');
 
     if (heroScene && heroImg) {
-        heroScene.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 30;
-            const y = (window.innerHeight / 2 - e.pageY) / 30;
-            
-            // translateZ(150px) crea el efecto de "salirse de la pantalla"
-            heroImg.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) translateZ(150px)`;
-        });
+        // En móviles desactivamos el mousemove para evitar saltos visuales
+        if (window.innerWidth > 1024) {
+            heroScene.addEventListener('mousemove', (e) => {
+                const x = (window.innerWidth / 2 - e.pageX) / 30;
+                const y = (window.innerHeight / 2 - e.pageY) / 30;
+                heroImg.style.transform = `rotateY(${x}deg) rotateX(${-y}deg) translateZ(150px)`;
+            });
 
-        heroScene.addEventListener('mouseleave', () => {
-            heroImg.style.transform = `rotateY(0deg) rotateX(0deg) translateZ(100px)`;
-        });
+            heroScene.addEventListener('mouseleave', () => {
+                heroImg.style.transform = `rotateY(0deg) rotateX(0deg) translateZ(100px)`;
+            });
+        } else {
+            // En móvil dejamos un transform estático suave para no afectar rendimiento
+            heroImg.style.transform = `translateZ(50px)`;
+        }
     }
 
     // --- 2. NAVEGACIÓN MÓVIL ---
     const toggle = document.getElementById("menu-toggle");
     const nav = document.getElementById("nav");
-    const navLinks = document.querySelectorAll(".nav-link");
+    const navLinks = document.querySelectorAll("#nav a"); // Aseguramos selector correcto
 
     if(toggle) {
         toggle.addEventListener("click", () => {
@@ -47,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modalTitle.innerText = title;
         modalBody.innerHTML = content;
         modal.style.display = "flex";
-        document.body.style.overflow = "hidden"; 
+        document.body.style.overflow = "hidden"; // Bloquea scroll fondo
     };
 
     if(closeBtn) {
@@ -83,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (index < cards.length - visible) {
             index++;
         } else {
-            index = 0; // Reinicia
+            index = 0; 
         }
         updateCarousel();
     };
@@ -98,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCarousel();
     };
 
-    // Autoplay Servicios
     let serviceInterval = setInterval(nextSlide, 3500);
 
     if(nextBtn && prevBtn) {
@@ -138,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
         moverGaleria();
     };
 
-    // Autoplay Galería
     let galeriaInterval = setInterval(siguienteGaleria, 4000);
 
     if(nextGaleria && prevGaleria) {
@@ -198,7 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Clic en tarjetas para abrir modal
     cards.forEach(card => {
         card.addEventListener('click', () => {
             const key = card.getAttribute('data-service');
@@ -219,7 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Zoom de imágenes en galería
     galeriaImgs.forEach(img => {
         img.addEventListener("click", () => {
             openModal("Inspiración", `<img src="${img.src}" style="width:100%; border-radius:15px;">`);
@@ -239,9 +238,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Ajustar carruseles al cambiar tamaño de pantalla
+    // --- 8. SISTEMA REVEAL (Aparecer al bajar scroll) ---
+    const handleReveal = () => {
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(el => {
+            const windowHeight = window.innerHeight;
+            const elementTop = el.getBoundingClientRect().top;
+            const elementVisible = 150;
+            if (elementTop < windowHeight - elementVisible) {
+                el.classList.add('active');
+            }
+        });
+    };
+
+    window.addEventListener('scroll', handleReveal);
     window.addEventListener('resize', () => {
+        index = 0; // Reiniciamos para evitar desbordamiento en resize
+        galeriaIndex = 0;
         updateCarousel();
         moverGaleria();
     });
+
+    // Ejecución inicial
+    handleReveal();
 });
